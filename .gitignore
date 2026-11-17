@@ -1,12 +1,6 @@
-# QNX Local Testing Sandboxes & VMs
-vm-test/
-bin/
-
-# Local build artifacts or object files
 *.o
-*.err
-*.map
-
-# OS-specific temp files
-.DS_Store
-Thumbs.db
+*.kev
+bin/
+build/
+vm-test/
+.vscode/
