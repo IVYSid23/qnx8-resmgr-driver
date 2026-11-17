@@ -1,0 +1,6 @@
+*.o
+*.kev
+bin/
+build/
+vm-test/
+.vscode/
