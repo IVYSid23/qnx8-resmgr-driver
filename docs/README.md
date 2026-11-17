@@ -4,7 +4,7 @@ This directory contains setup guides, architectural notes, and operational workf
 
 ## Available Guides
 
-* **[Target Bring-Up Guide](target_bringup.md)** — Step-by-step instructions for initializing the QNX SDP 8.0 environment in Windows Command Prompt (`cmd.exe`), cross-compiling with `qcc`, packaging the IFS image with `mkqnximage`, and verifying driver execution on the target.
+* **[Target Bring-Up Guide](TARGET_BRINGU_GUIDE.md)** — Step-by-step instructions for initializing the QNX SDP 8.0 environment in Windows Command Prompt (`cmd.exe`), cross-compiling with `qcc`, packaging the IFS image with `mkqnximage`, and verifying driver execution on the target.
 
 ## Contributing Documentation
 
