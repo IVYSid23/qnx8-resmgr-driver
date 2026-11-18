@@ -1,1 +1,1 @@
-[perms=0755] /proc/boot/my_driver = D:/qnx-hackathon-build/bin/x86_64/my_driver
+[perms=0755] /proc/boot/my_driver = @BIN@
