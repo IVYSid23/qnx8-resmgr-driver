@@ -1,0 +1,1 @@
+[perms=0755] /proc/boot/my_driver = @BIN@

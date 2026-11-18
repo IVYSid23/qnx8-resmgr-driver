@@ -1,0 +1,1 @@
+procmgr_symlink /system/bin/sshd-auth /usr/libexec/sshd-auth
