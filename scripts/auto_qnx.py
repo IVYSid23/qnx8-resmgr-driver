@@ -97,6 +97,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
                    "(default: my_driver when rebuilding the image, otherwise the first source's name).")
     p.add_argument("-l", "--libs", nargs="*", default=[],
                    help="Libraries to link, without the -l prefix, e.g. -l slog2 socket.")
+    p.add_argument("-I", "--include", action="append", type=Path, default=[], metavar="DIR",
+                   help="Extra header folder for the compiler (repeatable). <root>/include is always added if it exists.")
     p.add_argument("--target", choices=TARGETS, default="vbox", help="Target kind (default: vbox).")
     p.add_argument("--arch", choices=ARCH_COMPILERS,
                    help="CPU architecture (default: x86_64, or aarch64le for --target pi).")
@@ -181,6 +183,15 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         p.error("--port must be between 1 and 65535.")
     if args.boot_timeout <= 0 or args.run_timeout <= 0:
         p.error("Timeouts must be positive.")
+
+    include_dirs = [d.expanduser().resolve() for d in args.include]
+    default_include = args.root / "include"
+    if default_include.is_dir() and default_include not in include_dirs:
+        include_dirs.insert(0, default_include)
+    for d in include_dirs:
+        if not d.is_dir():
+            p.error(f"Include folder not found: {d}")
+    args.include = include_dirs
 
     resolved = []
     for source in args.sources:
@@ -442,7 +453,8 @@ def build_binary(args: argparse.Namespace) -> Path | None:
     binary = out_dir / args.output
     sources = " ".join(qpath(s) for s in args.sources)
     libs = " ".join(f"-l{lib}" for lib in args.libs)
-    command = f"qcc -V{ARCH_COMPILERS[args.arch]} {sources} {libs} -o {qpath(binary)}"
+    includes = " ".join(f"-I {qpath(d)}" for d in args.include)
+    command = f"qcc -V{ARCH_COMPILERS[args.arch]} {includes} {sources} {libs} -o {qpath(binary)}"
     print(f"Compiling for {args.arch} -> {binary}...")
     result = run_qnx(command, args.sdp_env)
     for text in (result.stdout, result.stderr):
